@@ -1,5 +1,24 @@
-class Subject:
+class Topic:
     pass
+    
+class Subject_A:
+    def __init__(self):
+        tree = Node(Topic())
+        tree.a = Node(Topic())
+        tree.b = Node(Topic())
+        tree.c = Node(Topic())
+        self.tree = Node.progeny(tree, 'TREE_A')
+
+class Subject_B:
+    def __init__(self):
+        tree = Node(Topic())
+        tree.a = Node(Topic())
+        tree.b = Node(Topic())
+        tree.b.a = Node(Topic())
+        tree.b.b = Node(Topic())
+        tree.b.b.a = Node(Topic())
+        tree.c = Node(Topic())
+        self.tree = Node.progeny(tree, 'TREE_B')
 
 class Node:
     def __init__(self, node=None, name=None):
@@ -16,8 +35,8 @@ class Node:
                 _children.extend(cls.posterity(child))
             children = _children
             
-        self.treename = name
         self.tree = True
+        self.treename = name
         return self
         
     @classmethod
@@ -35,62 +54,51 @@ class Forest:
     class TreeManager(Node):
         subject_class = dict()
         subject = dict() 
-        subject_structure = dict()
+        forest = dict()
                     
         @classmethod
-        def update(cls, tree):
-            treename = tree.treename
-            cls.subject[treename] = tree
-            cls.subject_class[treename] = tree.__class__
-            tree.node.TreeManager = cls
+        def update(cls, subject):
+            treename = subject.tree.treename
+            cls.forest[treename] = subject.tree
+            cls.subject[treename] = subject
+            cls.subject_class[treename] = subject.__class__
+            subject.tree.node.TreeManager = cls
             
     def TreeComponent(self, node):
         return self.TreeManager(node)
         
     def __init__(self):
-        # tree1: subject1
-        tree1 = Node(Subject())
-        tree1.a = Node(Subject())
-        tree1.b = Node(Subject())
-        tree1.c = Node(Subject())
-        tree1 = Node.progeny(tree1, 'TREE_A')
-
-        # tree2: subject2
-        tree2 = Node(Subject())
-        tree2.a = Node(Subject())
-        tree2.b = Node(Subject())
-        tree2.b.a = Node(Subject())
-        tree2.b.b = Node(Subject())
-        tree2.b.b.a = Node(Subject())
-        tree2.c = Node(Subject())
-        tree2 = Node.progeny(tree2, 'TREE_B')
-
-        maintree = self.TreeComponent(Subject())
-        maintree.a = self.TreeComponent(Subject())
-        maintree.b = self.TreeComponent(Subject())
-        maintree.c = self.TreeComponent(Subject())
-        self.TreeManager.progeny(maintree, 'MAINTREE')
-        self.TreeManager.update(tree1) 
-        self.TreeManager.update(tree2) 
+        tree = self.TreeComponent(Topic())
+        tree.a = self.TreeComponent(Topic())
+        tree.b = self.TreeComponent(Topic())
+        tree.c = self.TreeComponent(Topic())
+        self.tree = self.TreeManager.progeny(tree, 'MAINTREE')
+        self.TreeManager.update(Subject_A()) 
+        self.TreeManager.update(Subject_B()) 
 
         # [node class]
         node1_class = self.TreeManager.subject_class['TREE_A']
         node2_class = self.TreeManager.subject_class['TREE_B']
 
         # [node object]: subject from TreeManager
-        node1_object = self.TreeManager.subject['TREE_A']
-        node2_object = self.TreeManager.subject['TREE_B']
-        node3_object = self.TreeManager.subject['TREE_B'].a
-        subject1 = self.TreeManager.subject['TREE_A'].node
-        subject2 = self.TreeManager.subject['TREE_B'].node
-        subject1.TreeManager # root node TreeManager
-        subject2.TreeManager # root node TreeManager
+        tree_A = self.TreeManager.forest['TREE_A'] # rootnode object
+        tree_B = self.TreeManager.forest['TREE_B'] # rootnode object
+        tree_Ba = self.TreeManager.forest['TREE_B'].a # node object
+        tree_A = self.TreeManager.subject['TREE_A'].tree 
+        tree_B = self.TreeManager.subject['TREE_B'].tree
+        tree_Ba = self.TreeManager.subject['TREE_B'].tree.a
+
+        # [TreeManager] from rootnode subject
+        subject1 = self.TreeManager.subject['TREE_A'].tree.node # rootnode subject: topic object
+        subject2 = self.TreeManager.subject['TREE_B'].tree.node # rootnode subject: topic object
+        subject1.TreeManager # rootnode subject TreeManager
+        subject2.TreeManager # rootnode subject TreeManager
         
-        # [TreeManager] from node object: subject
-        tree1.a.mediate(self.TreeManager)
-        tree1.b.mediate(self.TreeManager)
-        tree1.a.node.TreeManager
-        tree1.b.node.TreeManager
+        # [TreeManager] from node subject
+        tree_A.a.mediate(self.TreeManager)
+        tree_A.b.mediate(self.TreeManager)
+        tree_A.a.node.TreeManager
+        tree_A.b.node.TreeManager
 
 forest = Forest()
 forest.TreeManager.subject['TREE_A']
