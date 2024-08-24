@@ -18,24 +18,30 @@ class Mangling:
         self.__name = name
 
 m = Mangling()
-print(m.name, m._Mangling__name, sep=', ')
+print('  [M]', m.name, m._Mangling__name, sep=', ')
 
 m.name = 'FROM OUTER'
-print(m.name, m._Mangling__name, sep=', ')
+print('  [M]', m.name, m._Mangling__name, sep=', ')
 
 m.member1('FROM MEMBER1')
-print(m.name, m._Mangling__name, sep=', ')
+print('  [M]', m.name, m._Mangling__name, sep=', ')
 
 m.member2('FROM MEMBER2')
-print(m.name, m._Mangling__name, sep=', ')
+print('  [M]', m.name, m._Mangling__name, sep=', ', end='\n\n')
 
 
 
 class Inheritance(Mangling):
     def __init__(self):
         super(Inheritance, self).__init__()
-        self.name = 'MANGLING OVERIDE'
+        self.name = 'MANGLING'
         self.__name = 'INHERITANCE'
+
+class ManglingOveride(Mangling):
+    def __init__(self):
+        super(ManglingOveride, self).__init__()
+        self.name = 'MANGLING'
+        self.__name = 'MANGLING OVERIDE'
 
     def member1(self, name):
         self.name = name
@@ -44,13 +50,22 @@ class Inheritance(Mangling):
         self.__name = name
 
 im = Inheritance()
-print(im.name, im._Mangling__name, im._Inheritance__name, sep=', ')
+iom = InheritanceOveride()
+print(' [IM]', im.name, im._Mangling__name, im._Inheritance__name, sep=', ')
+print('[IOM]', iom.name, iom._Mangling__name, iom._InheritanceOveride__name, sep=', ')
 
 im.name = 'FROM OUTER'
-print(im.name, im._Mangling__name, im._Inheritance__name, sep=', ')
+iom.name = 'FROM OUTER'
+print(' [IM]', im.name, im._Mangling__name, im._Inheritance__name, sep=', ')
+print('[IOM]', iom.name, iom._Mangling__name, iom._InheritanceOveride__name, sep=', ')
 
 im.member1('FROM MEMBER1')
-print(im.name, im._Mangling__name, im._Inheritance__name, sep=', ')
+iom.member1('FROM MEMBER1')
+print(' [IM]', im.name, im._Mangling__name, im._Inheritance__name, sep=', ')
+print('[IOM]', iom.name, iom._Mangling__name, iom._InheritanceOveride__name, sep=', ')
 
 im.member2('FROM MEMBER2')
-print(im.name, im._Mangling__name, im._Inheritance__name, sep=', ')
+iom.member2('FROM MEMBER2')
+print(' [IM]', im.name, im._Mangling__name, im._Inheritance__name, sep=', ')
+print('[IOM]', iom.name, iom._Mangling__name, iom._InheritanceOveride__name, sep=', ')
+
