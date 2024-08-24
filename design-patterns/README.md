@@ -1,0 +1,25 @@
+## Design Patterns
+- Creational Patterns
+  - Abstract Factory Pattern
+  - Factory Method Pattern
+  - Prototype Pattern
+  - Builder Pattern
+  - Singleton Pattern
+- Structural Patterns
+  - Adaptor Pattern
+  - Bridge Pattern
+  - Composite Pattern
+  - Decorator Pattern
+  - Facade Pattern
+  - Flyweight Pattern
+  - Proxy Pattern
+- Behavioral Patterns
+  - Observer Pattern
+  - Strategy Pattern
+  - Command Pattern
+  - Memento Pattern
+  - Template Method Pattern
+  - State Pattern
+  - Visitor Pattern
+  - Mediator Pattern
+  - Interpreter Pattern
