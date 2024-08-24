@@ -1,5 +1,9 @@
-class Topic:
+class Unit:
     pass
+    
+class Topic(Unit):
+    def __init__(self):
+        super(Topic, self).__init__()
     
 class Subject_A:
     def __init__(self):
