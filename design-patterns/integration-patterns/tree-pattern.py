@@ -3,6 +3,7 @@ class Subject:
 
 class Node:
     def __init__(self, node=None, name=None):
+        self.tree = False
         self.node = node
         self.nodename = name
 
@@ -16,7 +17,7 @@ class Node:
             children = _children
             
         self.treename = name
-        self.tree = self
+        self.tree = True
         return self
         
     @classmethod
