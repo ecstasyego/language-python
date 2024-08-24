@@ -27,6 +27,9 @@ class Node:
             child.nodename = name
         return self.children.values()
 
+    def mediate(self, TreeManager):
+        self.node.TreeManager = TreeManager
+        
 class Forest:
     class TreeManager(Node):
         subject_class = dict()
@@ -34,11 +37,11 @@ class Forest:
         subject_structure = dict()
                     
         @classmethod
-        def update(cls, self):
-            treename = self.treename
-            cls.subject_structure[treename] = self.tree
-            cls.subject[treename] = self
-            cls.subject_class[treename] = self.__class__
+        def update(cls, tree):
+            treename = tree.treename
+            cls.subject[treename] = tree
+            cls.subject_class[treename] = tree.__class__
+            tree.node.TreeManager = cls
             
     def TreeComponent(self, node):
         return self.TreeManager(node)
@@ -68,16 +71,26 @@ class Forest:
         self.TreeManager.progeny(maintree, 'MAINTREE')
         self.TreeManager.update(tree1) 
         self.TreeManager.update(tree2) 
+
+        # [node class]
+        node1_class = self.TreeManager.subject_class['TREE_A']
+        node2_class = self.TreeManager.subject_class['TREE_B']
+
+        # [node object]: subject from TreeManager
+        node1_object = self.TreeManager.subject['TREE_A']
+        node2_object = self.TreeManager.subject['TREE_B']
+        node3_object = self.TreeManager.subject['TREE_B'].a
+        subject1 = self.TreeManager.subject['TREE_A'].node
+        subject2 = self.TreeManager.subject['TREE_B'].node
+        subject1.TreeManager # root node TreeManager
+        subject2.TreeManager # root node TreeManager
         
-        subject1_component_a = self.TreeManager.subject_structure['TREE_A'].a.node
-        subject1_component_b = self.TreeManager.subject_structure['TREE_A'].b.node
-        subject1_component_c = self.TreeManager.subject_structure['TREE_A'].c.node
-        subject1 = self.TreeManager.subject['TREE_A']
-        subject2 = self.TreeManager.subject['TREE_B']
-        subject1_class = self.TreeManager.subject_class['TREE_A']
-        subject2_class = self.TreeManager.subject_class['TREE_B']
+        # [TreeManager] from node object: subject
+        tree1.a.mediate(self.TreeManager)
+        tree1.b.mediate(self.TreeManager)
+        tree1.a.node.TreeManager
+        tree1.b.node.TreeManager
 
 forest = Forest()
 forest.TreeManager.subject['TREE_A']
-
-        
+forest.TreeManager.subject_class['TREE_A']
