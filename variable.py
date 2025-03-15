@@ -1,22 +1,22 @@
 class Variable:
-    cls_variable = "CLASS"
+    var = "CLASS"
 
     def change_on_instance(self):
-        self.cls_variable = "Instance"
+        self.var = "Instance"
 
     @classmethod
     def change_on_class(cls):
-        cls.cls_variable = "Class"
+        cls.var = "Class"
 
 
-print(Variable.cls_variable) # "CLASS"
-print(Variable().cls_variable) # "CLASS"
+print(Variable.var) # "CLASS"
+print(Variable().var) # "CLASS"
 
 Variable.change_on_class()
-print(Variable.cls_variable) # "Class"
-print(Variable().cls_variable) # "Class"
+print(Variable.var) # "Class"
+print(Variable().var) # "Class"
 
 variable = Variable()
 variable.change_on_instance()
-print(variable.cls_variable) # "Instance"
-print(Variable.cls_variable) # "Class"
+print(variable.var) # "Instance"
+print(Variable.var) # "Class"
